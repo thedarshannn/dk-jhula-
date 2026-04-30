@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- ============================================================
+  ✏️ EDIT #1 — PAGE TITLE (shown in browser tab)
+  Change "DK Jhula — Handcrafted with Love" to anything you want
+============================================================ -->
+<title>DK Jhula — Handcrafted with Love</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  /* ============================================================
+     ✏️ EDIT #2 — WEBSITE COLORS
+     Change these color codes to update the whole website's look.
+     --brown-dark  = main dark color (buttons, navbar)
+     --gold        = accent/highlight color
+     --cream       = page background
+     Use any color codes from: https://htmlcolorcodes.com
+  ============================================================ */
+  --cream: #FAF6F0;
+  --warm-white: #FDF9F4;
+  --brown-dark: #3D1C08;
+  --brown-mid: #6B3A1F;
+  --brown-light: #A0622A;
+  --gold: #C49A3C;
+  --gold-light: #E8C97A;
+  --beige: #E8DDD0;
+  --beige-mid: #D4C4B0;
+  --text-dark: #2C1505;
+  --text-mid: #5A3820;
+  --text-light: #9A7B60;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Jost', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--warm-white); border-bottom: 1px solid var(--beige);
+  display: flex; align-items: center; justify-content: space-between; padding: 10px 40px;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo-img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+.nav-brand-name { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--brown-dark); }
+.nav-brand-owner { font-size: 11px; color: var(--text-light); font-style: italic; letter-spacing: 0.5px; }
+.nav-brand-tag { font-size: 10px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--brown-dark); }
+.btn-wa {
+  display: flex; align-items: center; gap: 8px; background: #25D366; color: white;
+  padding: 9px 18px; border-radius: 6px; font-size: 13px; font-weight: 500;
+  text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.2s;
+}
+.btn-wa:hover { opacity: 0.88; }
+.btn-wa svg { width: 16px; height: 16px; }
+.hero {
+  min-height: 88vh; background: var(--warm-white);
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; padding: 60px 40px 60px 60px; gap: 40px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: var(--beige); opacity: 0.35; pointer-events: none;
+}
+.hero-left { position: relative; z-index: 1; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--beige); border-radius: 20px; padding: 6px 16px; margin-bottom: 24px;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--brown-mid); font-weight: 500;
+}
+.hero-eyebrow::before { content: '✦'; color: var(--gold); }
+.hero h1 { font-family: var(--font-display); font-size: 54px; font-weight: 600; line-height: 1.1; color: var(--brown-dark); margin-bottom: 10px; }
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-owner { font-family: var(--font-display); font-size: 18px; font-style: italic; color: var(--text-light); margin-bottom: 16px; }
+.hero-owner span { color: var(--gold); font-weight: 600; }
+.hero-desc { font-size: 15px; color: var(--text-mid); line-height: 1.75; max-width: 440px; margin-bottom: 28px; }
+.hero-stats { display: flex; gap: 32px; margin-bottom: 36px; }
+.stat { text-align: center; }
+.stat-num { font-family: var(--font-display); font-size: 32px; font-weight: 600; color: var(--brown-dark); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px; }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-primary {
+  padding: 14px 32px; background: var(--brown-dark); color: var(--gold-light);
+  border: none; border-radius: 6px; font-family: var(--font-body); font-size: 13px;
+  letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+  cursor: pointer; text-decoration: none; transition: background 0.2s, transform 0.15s; display: inline-block;
+}
+.btn-primary:hover { background: var(--brown-mid); transform: translateY(-1px); }
+.btn-outline {
+  padding: 13px 28px; background: transparent; color: var(--brown-dark);
+  border: 1.5px solid var(--brown-dark); border-radius: 6px; font-family: var(--font-body); font-size: 13px;
+  letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+  cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-block;
+}
+.btn-outline:hover { background: var(--brown-dark); color: var(--gold-light); }
+.hero-right { position: relative; display: flex; justify-content: center; align-items: center; }
+.hero-logo-frame {
+  width: 400px; height: 400px; border-radius: 50%;
+  border: 3px solid var(--gold); background: var(--cream);
+  overflow: hidden; box-shadow: 0 16px 64px rgba(61,28,8,0.12);
+}
+.hero-logo-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.hero-float-badge {
+  position: absolute; bottom: 24px; left: -20px;
+  background: var(--brown-dark); color: var(--gold-light);
+  padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 500;
+}
+.hero-float-badge span { display: block; font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--gold); }
+.trust-bar { background: var(--brown-dark); display: flex; justify-content: center; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 10px; padding: 18px 28px; border-right: 1px solid rgba(255,255,255,0.1); color: var(--gold-light); }
+.trust-item:last-child { border-right: none; }
+.trust-icon { font-size: 20px; }
+.trust-text strong { display: block; font-weight: 500; font-size: 13px; }
+.trust-text span { color: rgba(232,201,122,0.65); font-size: 11px; }
+.features-banner { background: var(--warm-white); padding: 40px; border-bottom: 1px solid var(--beige); }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px; }
+.feature-item { display: flex; align-items: flex-start; gap: 12px; }
+.feature-icon { font-size: 26px; flex-shrink: 0; }
+.feature-title { font-weight: 500; color: var(--brown-dark); font-size: 14px; margin-bottom: 3px; }
+.feature-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+section { padding: 72px 40px; }
+.section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 10px; }
+.section-title { font-family: var(--font-display); font-size: 40px; font-weight: 600; color: var(--brown-dark); line-height: 1.2; margin-bottom: 12px; }
+.section-sub { font-size: 15px; color: var(--text-light); max-width: 560px; line-height: 1.7; }
+.section-head { margin-bottom: 48px; }
+.section-head.center { text-align: center; }
+.section-head.center .section-sub { margin: 0 auto; }
+.filter-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+.filter-btn {
+  padding: 8px 22px; border: 1.5px solid var(--beige-mid); border-radius: 30px;
+  background: transparent; cursor: pointer; font-family: var(--font-body); font-size: 13px;
+  color: var(--text-light); letter-spacing: 0.5px; transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active { background: var(--brown-dark); color: var(--gold-light); border-color: var(--brown-dark); }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+.product-card {
+  background: var(--warm-white); border: 1px solid var(--beige);
+  border-radius: 14px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+}
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(61,28,8,0.1); }
+.product-img { height: 250px; position: relative; background: #fff; overflow: hidden; }
+.product-img img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.product-badge {
+  position: absolute; top: 12px; left: 12px; z-index: 2;
+  font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px;
+}
+.badge-best { background: var(--gold); color: var(--brown-dark); }
+.badge-new { background: #C8E6C9; color: #1B5E20; }
+.badge-sale { background: #FFCDD2; color: #B71C1C; }
+.product-body { padding: 16px 18px 20px; }
+.product-name { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--brown-dark); margin-bottom: 5px; line-height: 1.3; }
+.product-desc { font-size: 11px; color: var(--text-light); line-height: 1.5; margin-bottom: 14px; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--brown-mid); }
+.order-btn {
+  padding: 8px 18px; background: var(--brown-dark); color: var(--gold-light);
+  border: none; border-radius: 6px; cursor: pointer; font-family: var(--font-body);
+  font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; transition: background 0.2s;
+}
+.order-btn:hover { background: var(--brown-mid); }
+.about-section { background: var(--brown-dark); display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 72px 40px; }
+.about-img { width: 100%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; max-width: 360px; border: 3px solid var(--gold); }
+.about-img img { width: 100%; height: 100%; object-fit: cover; }
+.about-owner-tag { display: inline-block; background: rgba(196,154,60,0.15); border: 1px solid var(--gold); border-radius: 8px; padding: 10px 18px; margin-bottom: 20px; }
+.about-owner-label { font-size: 10px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+.about-owner-name { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--gold-light); font-style: italic; }
+.about-text { font-size: 15px; color: rgba(232,201,122,0.75); line-height: 1.8; margin-bottom: 18px; }
+.about-highlight { font-family: var(--font-display); font-size: 22px; font-style: italic; color: var(--gold); margin-bottom: 28px; line-height: 1.4; }
+.about-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+.about-pill { padding: 6px 16px; border: 1px solid var(--gold); border-radius: 20px; color: var(--gold-light); font-size: 12px; letter-spacing: 1px; }
+.about-section .section-label { color: var(--gold); }
+.about-section .section-title { color: var(--gold-light); }
+.feedback-section { background: var(--warm-white); }
+.feedback-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.feedback-form-wrap { background: var(--cream); border: 1px solid var(--beige); border-radius: 16px; padding: 36px; }
+.feedback-form-title { font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--brown-dark); margin-bottom: 6px; }
+.feedback-form-sub { font-size: 13px; color: var(--text-light); margin-bottom: 28px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-mid); font-weight: 500; margin-bottom: 6px; }
+.form-group input, .form-group textarea {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--beige-mid); border-radius: 8px;
+  background: var(--warm-white); color: var(--text-dark); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group textarea:focus { border-color: var(--gold); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.star-select { display: flex; gap: 6px; margin-bottom: 16px; }
+.star-select span { font-size: 30px; cursor: pointer; color: var(--beige-mid); transition: color 0.15s; user-select: none; }
+.star-select span.active { color: var(--gold); }
+.form-submit {
+  width: 100%; padding: 14px; background: var(--brown-dark); color: var(--gold-light);
+  border: none; border-radius: 8px; font-family: var(--font-body); font-size: 13px;
+  letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; cursor: pointer; transition: background 0.2s;
+}
+.form-submit:hover { background: var(--brown-mid); }
+.form-success { display: none; text-align: center; padding: 16px; background: #E8F5E9; border: 1px solid #A5D6A7; border-radius: 8px; color: #2E7D32; font-size: 14px; margin-top: 16px; }
+.feedbacks-list-title { font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--brown-dark); margin-bottom: 4px; }
+.feedbacks-count { font-size: 13px; color: var(--text-light); margin-bottom: 24px; }
+.feedbacks-list { display: flex; flex-direction: column; gap: 14px; max-height: 560px; overflow-y: auto; padding-right: 4px; }
+.feedbacks-list::-webkit-scrollbar { width: 4px; }
+.feedbacks-list::-webkit-scrollbar-thumb { background: var(--beige-mid); border-radius: 4px; }
+.feedback-card { background: var(--cream); border: 1px solid var(--beige); border-radius: 12px; padding: 20px; }
+.feedback-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.feedback-author { font-weight: 500; color: var(--brown-dark); font-size: 14px; }
+.feedback-product { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+.feedback-stars { color: var(--gold); font-size: 14px; }
+.feedback-text { font-size: 13px; color: var(--text-mid); line-height: 1.6; font-style: italic; }
+.feedback-date { font-size: 11px; color: var(--text-light); margin-top: 8px; }
+.no-feedback { text-align: center; padding: 40px 20px; color: var(--text-light); font-size: 14px; font-style: italic; }
+.order-section { background: var(--beige); text-align: center; padding: 72px 40px; }
+.order-cards { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px; }
+.order-card { background: var(--warm-white); border: 1px solid var(--beige-mid); border-radius: 14px; padding: 28px 32px; min-width: 200px; text-align: center; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
+.order-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.order-card-icon { font-size: 32px; margin-bottom: 10px; }
+.order-card-title { font-weight: 500; color: var(--brown-dark); margin-bottom: 4px; }
+.order-card-sub { font-size: 13px; color: var(--text-light); }
+footer { background: var(--text-dark); padding: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.footer-logo-wrap { display: flex; align-items: center; gap: 14px; }
+.footer-logo-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold); }
+.footer-brand { font-family: var(--font-display); font-size: 22px; color: var(--gold-light); font-weight: 600; }
+.footer-brand span { color: var(--gold); }
+.footer-owner { font-size: 12px; color: rgba(232,201,122,0.6); font-style: italic; margin-top: 2px; }
+.footer-tagline { font-size: 11px; color: rgba(232,201,122,0.4); margin-top: 2px; letter-spacing: 1px; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 13px; color: rgba(232,201,122,0.55); text-decoration: none; letter-spacing: 1px; }
+.footer-links a:hover { color: var(--gold-light); }
+.footer-copy { font-size: 12px; color: rgba(232,201,122,0.35); }
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--brown-dark); color: var(--gold-light); padding: 14px 24px; border-radius: 8px; font-size: 14px; border: 1px solid var(--gold); opacity: 0; pointer-events: none; transform: translateY(8px); transition: all 0.3s; z-index: 999; }
+.toast.show { opacity: 1; transform: translateY(0); }
+@media (max-width: 768px) {
+  nav { padding: 10px 20px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 40px 20px; min-height: auto; }
+  .hero-right { display: none; }
+  .hero h1 { font-size: 36px; }
+  section { padding: 48px 20px; }
+  .about-section { grid-template-columns: 1fr; padding: 48px 20px; }
+  .about-img { display: none; }
+  .feedback-grid { grid-template-columns: 1fr; }
+  .features-banner { padding: 28px 20px; }
+  footer { flex-direction: column; text-align: center; padding: 32px 20px; }
+  .trust-item { padding: 14px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+  ✏️ EDIT #3 — NAVBAR LOGO IMAGE
+  Replace "logo_png.jpg" with your logo file name.
+  Make sure your logo file is in the SAME FOLDER as index.html!
+  Example: src="my_logo.png" or src="dk_logo.jpg"
+============================================================ -->
+<nav>
+  <div class="nav-logo">
+    <img class="nav-logo-img" src="logo_png.jpg" alt="DK Jhula Logo"/>
+    <div>
+      <!-- ✏️ EDIT #4 — BUSINESS NAME in navbar -->
+      <div class="nav-brand-name">DK Jhula</div>
+      <!-- ✏️ EDIT #5 — OWNER NAME in navbar -->
+      <div class="nav-brand-owner">by Daxaben K. Prajapati</div>
+      <!-- ✏️ EDIT #6 — TAGLINE in navbar -->
+      <div class="nav-brand-tag">Handcrafted with Love</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#feedback">Reviews</a></li>
+    <li><a href="#order">Order</a></li>
+  </ul>
+  <div>
+    <!-- ✏️ EDIT #7 — WHATSAPP BUTTON in navbar
+         Replace 916351551471 with: 91 + your 10-digit number
+         Example: 919876543210 -->
+    <a class="btn-wa" href="https://wa.me/916351551471" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp Order
+    </a>
+  </div>
+</nav>
+
+<!-- ============================================================
+  ✏️ EDIT #8 — HERO SECTION (Big banner at top of page)
+  This is the first thing visitors see!
+============================================================ -->
+<section class="hero">
+  <div class="hero-left">
+    <!-- ✏️ EDIT #9 — Small badge text above headline -->
+    <div class="hero-eyebrow">Handcrafted in India</div>
+
+    <!-- ✏️ EDIT #10 — MAIN HEADLINE
+         The word inside <em>...</em> appears in gold italic -->
+    <h1>Beautiful<br><em>Jhulas</em> &<br>Home Decor</h1>
+
+    <!-- ✏️ EDIT #11 — Owner name shown below headline -->
+    <p class="hero-owner">by <span>Daxaben K. Prajapati</span></p>
+
+    <!-- ✏️ EDIT #12 — SHORT DESCRIPTION under headline -->
+    <p class="hero-desc">Each piece is handcrafted using premium resham doori — washable, strong, with warranty. From royal canopy jhulas to baby cradles and artisan décor. Customize colour, design & size. Ships worldwide.</p>
+
+    <!-- ✏️ EDIT #13 — STATS (numbers shown under description) -->
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">15+</div>        <!-- Change number here -->
+        <div class="stat-label">Years Experience</div>  <!-- Change label here -->
+      </div>
+      <div class="stat">
+        <div class="stat-num">70+</div>         <!-- Change number here -->
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5+</div>          <!-- Change number here -->
+        <div class="stat-label">Countries Served</div>
+      </div>
+    </div>
+
+    <div class="hero-btns">
+      <a href="#shop" class="btn-primary">Shop Now</a>
+      <!-- ✏️ EDIT #14 — WhatsApp number in Custom Order button -->
+      <a href="https://wa.me/916351551471" target="_blank" class="btn-outline">Custom Order</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- ✏️ EDIT #15 — HERO IMAGE (right side of banner)
+         Replace "logo_png.jpg" with any product photo file name -->
+    <div class="hero-logo-frame">
+      <img src="logo_png.jpg" alt="DK Jhula"/>
+    </div>
+    <!-- ✏️ EDIT #16 — Floating badge on hero image -->
+    <div class="hero-float-badge">
+      <span>DK Jhula</span>Handmade with Love ♥
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  ✏️ EDIT #17 — TRUST BAR (dark brown strip of features)
+  Change the text inside <strong> and <span> tags
+============================================================ -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <div class="trust-icon">🚚</div>
+    <div class="trust-text"><strong>Pan-India Delivery</strong><span>Ships to all states</span></div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">🌍</div>
+    <div class="trust-text"><strong>5+ Countries Served</strong><span>Worldwide shipping</span></div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">🧵</div>
+    <div class="trust-text"><strong>Premium Resham Doori</strong><span>Washable & long-lasting</span></div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">💪</div>
+    <div class="trust-text"><strong>150–200 kg Capacity</strong><span>Safe for all ages & sizes</span></div>
+  </div>
+  <div class="trust-item">
+    <div class="trust-icon">🎨</div>
+    <div class="trust-text"><strong>Full Customization</strong><span>Colour, size & design</span></div>
+  </div>
+</div>
+
+<!-- ============================================================
+  ✏️ EDIT #18 — FEATURES SECTION (5 icons with text)
+  Change icon emoji, title, and description for each feature
+============================================================ -->
+<div class="features-banner">
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-icon">🧵</div>  <!-- Change emoji here -->
+      <div>
+        <div class="feature-title">Premium Resham Doori</div>      <!-- Change title -->
+        <div class="feature-desc">High-quality silk-finish rope for strength, shine, and durability.</div>  <!-- Change desc -->
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🫧</div>
+      <div>
+        <div class="feature-title">Fully Washable</div>
+        <div class="feature-desc">Easy to clean — wash and it's as good as new. Hygienic for the whole family.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🛡️</div>
+      <div>
+        <div class="feature-title">Rope Warranty</div>
+        <div class="feature-desc">If the doori breaks naturally, we repair or replace it. No questions asked.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">👨‍👩‍👧‍👦</div>
+      <div>
+        <div class="feature-title">All Ages & Sizes</div>
+        <div class="feature-desc">Holds 150–200 kg. Comfortable and safe for every member of the family.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🎨</div>
+      <div>
+        <div class="feature-title">Customize Freely</div>
+        <div class="feature-desc">Choose your colour, design, and size. Every jhula can be made just for you.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  SHOP / PRODUCTS SECTION
+  ✏️ Products are added in the JavaScript section at the BOTTOM
+     Scroll down and look for "EDIT #19 — ADD YOUR PRODUCTS"
+============================================================ -->
+<section id="shop">
+  <div class="section-head">
+    <div class="section-label">Our Collection</div>
+    <!-- ✏️ EDIT: Change shop section heading/description if needed -->
+    <div class="section-title">Handcrafted with Love</div>
+    <div class="section-sub">Every piece is made by hand using premium resham doori. Fully washable, warranted, and customizable in colour, size & design. Capacity: 150–200 kg.</div>
+  </div>
+  <!-- ✏️ EDIT: Add/remove filter buttons to match your categories -->
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterProducts(this,'all')">All Items</button>
+    <button class="filter-btn" onclick="filterProducts(this,'jhula')">Jhulas &amp; Swings</button>
+    <button class="filter-btn" onclick="filterProducts(this,'baby')">Baby Jhula</button>
+    <button class="filter-btn" onclick="filterProducts(this,'decor')">Home Decor</button>
+  </div>
+  <div class="products-grid" id="products-grid"></div>
+</section>
+
+<!-- ============================================================
+  ✏️ EDIT #20 — ABOUT SECTION
+  Change your story, name, description text here
+============================================================ -->
+<section class="about-section" id="about">
+  <!-- ✏️ EDIT #21 — ABOUT IMAGE
+       Replace "logo_png.jpg" with your own photo if you want -->
+  <div class="about-img"><img src="logo_png.jpg" alt="DK Jhula"/></div>
+  <div>
+    <div class="section-label">Our Story</div>
+    <!-- ✏️ EDIT #22 — About section heading -->
+    <div class="section-title">DK Jhula —<br>A Home Business<br>Built on Craft</div>
+    <div class="about-owner-tag">
+      <div class="about-owner-label">Owner &amp; Artisan</div>
+      <!-- ✏️ EDIT #23 — Owner name in about section -->
+      <div class="about-owner-name">Daxaben K. Prajapati</div>
+    </div>
+    <!-- ✏️ EDIT #24 — About paragraphs. Change your story here -->
+    <p class="about-text">DK Jhula is a small home-based business run with passion from Anand, Gujarat. Every jhula and home decor item is handcrafted using premium resham doori — no factory, no machines. Just skilled hands, a loving heart, and 15+ years of experience.</p>
+    <p class="about-text">All products are fully washable and come with a rope warranty. We customize colour, design, and size for any order. Our jhulas hold 150–200 kg and are safe for all ages — from babies to grandparents.</p>
+    <!-- ✏️ EDIT #25 — Quote / highlight text -->
+    <div class="about-highlight">"More than 15 years of craft,<br>delivered to your doorstep."</div>
+    <!-- ✏️ EDIT #26 — Pill/tag badges. Add or remove <div class="about-pill"> lines -->
+    <div class="about-pills">
+      <div class="about-pill">15+ Years Experience</div>
+      <div class="about-pill">Resham Doori</div>
+      <div class="about-pill">5+ Countries</div>
+      <div class="about-pill">Fully Washable</div>
+      <div class="about-pill">Rope Warranty</div>
+      <div class="about-pill">Custom Orders Welcome</div>
+    </div>
+    <!-- ✏️ EDIT #27 — WhatsApp number in About button -->
+    <a href="https://wa.me/916351551471" class="btn-primary" target="_blank">Chat for product </a>
+  </div>
+</section>
+
+<!-- ============================================================
+  REVIEWS SECTION — customers can submit reviews live on the page
+  No editing needed here. Reviews are submitted by customers.
+============================================================ -->
+<section class="feedback-section" id="feedback">
+  <div class="section-head center">
+    <div class="section-label">Customer Love</div>
+    <div class="section-title">Reviews & Feedback</div>
+    <div class="section-sub">Loved your DK Jhula? Share your experience — it inspires us and helps other customers too!</div>
+  </div>
+  <div class="feedback-grid">
+    <div class="feedback-form-wrap">
+      <div class="feedback-form-title">Leave a Review</div>
+      <div class="feedback-form-sub">Your name and email are required. Email will be shown partially for privacy.</div>
+      <div class="form-group"><label>Your Name *</label><input type="text" id="fb-name" placeholder="e.g. Priya Sharma"/></div>
+      <div class="form-group"><label>Email Address *</label><input type="email" id="fb-email" placeholder="your@email.com"/></div>
+      <div class="form-group"><label>Product Purchased (optional)</label><input type="text" id="fb-product" placeholder="e.g. Pink Canopy Jhula"/></div>
+      <div class="form-group">
+        <label>Your Rating</label>
+        <div class="star-select" id="star-select">
+          <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span>
+          <span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span>
+          <span onclick="setRating(5)">★</span>
+        </div>
+      </div>
+      <div class="form-group"><label>Your Feedback *</label><textarea id="fb-text" placeholder="Tell us about quality, delivery, customization experience..."></textarea></div>
+      <button class="form-submit" onclick="submitFeedback()">Submit Feedback</button>
+      <div class="form-success" id="form-success">🙏 Thank you! Your feedback means the world to us.</div>
+    </div>
+    <div>
+      <div class="feedbacks-list-title">Customer Reviews</div>
+      <div class="feedbacks-count" id="feedbacks-count">Be the first to leave a review!</div>
+      <div class="feedbacks-list" id="feedbacks-list">
+        <div class="no-feedback" id="no-feedback">No reviews yet. Share yours above! 🌟</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  ✏️ EDIT #28 — ORDER / CONTACT SECTION
+  Update your WhatsApp number, Instagram handle, city
+============================================================ -->
+<section class="order-section" id="order">
+  <div class="section-label">Place an Order</div>
+  <div class="section-title">Ready to Order?</div>
+  <p class="section-sub" style="margin:0 auto">WhatsApp or Instagram to order, customize, or ask questions. Custom colour, size &amp; design available. Delivering across India and internationally.</p>
+  <div class="order-cards">
+    <!-- ✏️ EDIT #29 — WhatsApp number and display number -->
+    <a class="order-card" href="https://wa.me/916351551471" target="_blank">
+      <div class="order-card-icon">💬</div>
+      <div class="order-card-title">WhatsApp</div>
+      <div class="order-card-sub">+91 63515 51471</div>  <!-- Change display number -->
+    </a>
+    <!-- ✏️ EDIT #30 — Instagram handle
+         Replace "dkjhula_" with your actual Instagram username -->
+    <a class="order-card" href="https://instagram.com/dkjhula_" target="_blank">
+      <div class="order-card-icon">📸</div>
+      <div class="order-card-title">Instagram</div>
+      <div class="order-card-sub">@dkjhula_</div>
+    </a>
+    <!-- ✏️ EDIT #31 — Your city/location -->
+    <div class="order-card">
+      <div class="order-card-icon">📍</div>
+      <div class="order-card-title">Location</div>
+      <div class="order-card-sub">Anand, Gujarat, India</div>
+    </div>
+    <div class="order-card">
+      <div class="order-card-icon">📦</div>
+      <div class="order-card-title">Delivery</div>
+      <div class="order-card-sub">India &amp; Worldwide</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  ✏️ EDIT #32 — FOOTER
+  Update business name, owner name, year established
+============================================================ -->
+<footer>
+  <div class="footer-logo-wrap">
+    <!-- ✏️ EDIT #33 — Footer logo image file name -->
+    <img class="footer-logo-img" src="logo_png.jpg" alt="DK Jhula"/>
+    <div>
+      <div class="footer-brand">DK <span>Jhula</span></div>
+      <div class="footer-owner">by Daxaben K. Prajapati</div>
+      <!-- ✏️ EDIT #34 — Year established -->
+      <div class="footer-tagline">Handcrafted with Love · Est. 2009</div>
+    </div>
+  </div>
+  <div class="footer-links">
+    <a href="#shop">Shop</a><a href="#about">About</a><a href="#feedback">Reviews</a><a href="#order">Contact</a>
+  </div>
+  <!-- ✏️ EDIT #35 — Copyright year and business name -->
+  <div class="footer-copy">© 2026 DK Jhula. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast">✓ Opening WhatsApp to place your order!</div>
+
+<script>
+// ============================================================
+// ✏️ EDIT #36 — YOUR WHATSAPP NUMBER
+// Replace 916351551471 with 91 + your 10-digit number
+// Example: 919876543210
+// ============================================================
+const WHATSAPP = "916351551471";
+
+// ============================================================
+// ✏️ EDIT #37 — COMMON PRODUCT DESCRIPTION
+// This D variable is used as default description for jhulas.
+// Change it to match your standard features.
+// ============================================================
+const D = "Resham doori • Washable • Warranty • 150–200kg capacity • Customize colour, size & design";
+
+// ============================================================
+// ✏️ EDIT #19 — ADD YOUR PRODUCTS HERE
+//
+// HOW TO ADD A NEW PRODUCT:
+// Copy one block from { to }, paste it after the last one,
+// add a comma after the previous product's closing }
+//
+// FIELDS:
+//   name   = Product name shown on card
+//   desc   = Short description (or use D for the standard one)
+//   price  = Price shown e.g. "₹2,999"
+//   img    = Your photo filename e.g. "p1.jpg"
+//            ⚠️ Photo must be in the SAME FOLDER as index.html!
+//   badge  = "best" (gold) | "new" (green) | "sale" (red) | "" (none)
+//   cat    = "jhula" | "baby" | "decor"
+//            (must match the filter buttons above)
+//
+// HOW TO REMOVE A PRODUCT: Delete from { to }, including the comma
+// HOW TO CHANGE PRICE: Just change the "₹..." text
+// HOW TO CHANGE PHOTO: Change the "p1.jpg" to your new file name
+// ============================================================
+const products = [
+  { name: "Royal Canopy Jhula — Pink & White",        desc: D,   price: "₹4,500",  img: "p1.jpg",  badge: "best", cat: "jhula" },
+  { name: "Round Macramé Swing — Pink",               desc: D,   price: "₹2,999",  img: "p2.jpg",  badge: "new",  cat: "jhula" },
+  { name: "Luxury Round Daybed Swing — Red",          desc: D,   price: "₹12,650", img: "p3.jpg",  badge: "best", cat: "jhula" },
+  { name: "Baby Sleeping Jhula",                      desc: "Natural cotton • Wooden bead accents • Soft & safe for infants • Washable • Warranty", price: "₹3,999", img: "p4.jpg", badge: "best", cat: "baby" },
+  { name: "Boho Canopy Swing — Cream (Open)",         desc: D,   price: "₹9,500",  img: "p5.jpg",  badge: "new",  cat: "jhula" },
+  { name: "Boho Canopy Swing — Cream (Closed)",       desc: D,   price: "₹9,500",  img: "p6.jpg",  badge: "",     cat: "jhula" },
+  { name: "Rust Canopy Daybed Swing",                 desc: D,   price: "₹9,900",  img: "p7.jpg",  badge: "best", cat: "jhula" },
+  { name: "Cone Net Swing — Forest Green",            desc: D,   price: "₹3,560",  img: "p8.jpg",  badge: "new",  cat: "jhula" },
+  { name: "Royal Canopy Chair — Black & Gold",        desc: D,   price: "₹2,500",  img: "p9.jpg",  badge: "sale", cat: "jhula" },
+  { name: "Bell Jhula — Hot Pink",                    desc: D,   price: "₹4,100",  img: "p10.jpg", badge: "new",  cat: "jhula" },
+  { name: "Kids Square Swing — Blue & White",         desc: D,   price: "₹2,800",  img: "p11.jpg", badge: "new",  cat: "jhula" },
+  { name: "Macramé Ganesha Wall Art",                 desc: "Handknotted resham rope • Unique home décor • Customizable size & colour", price: "₹350", img: "p12.jpg", badge: "best", cat: "decor" },
+];
+// ============================================================
+// END OF PRODUCTS — do not edit below this line
+// ============================================================
+
+function renderProducts(items) {
+  document.getElementById('products-grid').innerHTML = items.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        ${p.badge ? `<div class="product-badge badge-${p.badge}">${p.badge==='best'?'Bestseller':p.badge==='new'?'New':'Sale'}</div>` : ''}
+        <img src="${p.img}" alt="${p.name}" loading="lazy"/>
+      </div>
+      <div class="product-body">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">${p.price}</div>
+          <button class="order-btn" onclick="orderProduct('${p.name}','${p.price}')">Order</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterProducts(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat === 'all' ? products : products.filter(p => p.cat === cat));
+}
+
+function orderProduct(name, price) {
+  const msg = encodeURIComponent(`Hi DK Jhula! 🙏\nI'd like to order:\n*${name}* (${price})\nPlease share availability, customization options & delivery details.`);
+  window.open(`https://wa.me/${WHATSAPP}?text=${msg}`, '_blank');
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+let feedbacks = [];
+let selectedRating = 5;
+window.onload = () => { setRating(5); };
+
+function setRating(n) {
+  selectedRating = n;
+  document.querySelectorAll('#star-select span').forEach((s, i) => s.classList.toggle('active', i < n));
+}
+
+function submitFeedback() {
+  const name = document.getElementById('fb-name').value.trim();
+  const email = document.getElementById('fb-email').value.trim();
+  const product = document.getElementById('fb-product').value.trim();
+  const text = document.getElementById('fb-text').value.trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+  if (!text) { alert('Please write your feedback.'); return; }
+  feedbacks.unshift({
+    name, product, rating: selectedRating, text,
+    email: email.replace(/(.{2})(.*)(@.*)/, (_, a, b, c) => a + b.replace(/./g,'*') + c),
+    date: new Date().toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })
+  });
+  document.getElementById('fb-name').value = '';
+  document.getElementById('fb-email').value = '';
+  document.getElementById('fb-product').value = '';
+  document.getElementById('fb-text').value = '';
+  setRating(5);
+  const s = document.getElementById('form-success');
+  s.style.display = 'block';
+  setTimeout(() => s.style.display = 'none', 4000);
+  renderFeedbacks();
+}
+
+function renderFeedbacks() {
+  const list = document.getElementById('feedbacks-list');
+  const count = document.getElementById('feedbacks-count');
+  if (!feedbacks.length) {
+    list.innerHTML = '<div class="no-feedback">No reviews yet. Share yours! 🌟</div>';
+    count.textContent = 'Be the first to leave a review!';
+    return;
+  }
+  count.textContent = `${feedbacks.length} review${feedbacks.length > 1 ? 's' : ''} from our customers`;
+  list.innerHTML = feedbacks.map(f => `
+    <div class="feedback-card">
+      <div class="feedback-card-header">
+        <div>
+          <div class="feedback-author">${f.name}</div>
+          ${f.product ? `<div class="feedback-product">Purchased: ${f.product}</div>` : ''}
+        </div>
+        <div class="feedback-stars">${'★'.repeat(f.rating)}${'☆'.repeat(5-f.rating)}</div>
+      </div>
+      <div class="feedback-text">"${f.text}"</div>
+      <div class="feedback-date">${f.date} · ${f.email}</div>
+    </div>`).join('');
+}
+
+renderProducts(products);
+</script>
+</body>
+</html>
