@@ -1,59 +1,68 @@
+import { Link } from "react-router-dom";
 import { ASSETS } from "@/lib/cloudinary";
-import { Separator } from "@/components/ui/separator";
 import { BlurFade } from "@/components/ui/blur-fade";
 
 const footerLinks = [
-  { label: "Shop",    href: "#shop" },
-  { label: "About",   href: "#about" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "Contact", href: "#order" },
+  { label: "Collections", to: "/collections" },
+  { label: "Heritage",    to: "/heritage" },
+  { label: "Reviews",     to: "/reviews" },
+  { label: "Contact",     to: "/contact" },
+];
+
+const legalLinks = [
+  "Privacy Policy",
+  "Shipping Info",
+  "Terms of Service",
+  "Bulk Orders",
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-brown">
-      <div className="max-w-7xl mx-auto px-6 py-10 md:px-10 lg:px-16">
+    <footer className="bg-inverse-surface text-inverse-on-surface">
+      <div className="max-w-[1440px] mx-auto px-8 md:px-12 lg:px-16 py-16 md:py-24">
         <BlurFade delay={0.1} inView inViewMargin="-40px">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-7">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-12 md:gap-24 mb-16">
             {/* Brand */}
-            <div className="flex items-center gap-3.5">
-              <div className="w-9 h-9 rounded-full overflow-hidden border border-gold/22 shrink-0">
-                <img src={ASSETS.logo} alt="DK Jhula" className="w-full h-full object-cover" />
-              </div>
-              <div>
-                <div className="font-body text-[19px] italic text-warm-white leading-none">
-                  DK <span className="text-gold">Jhula</span>
+            <div>
+              <Link to="/" className="flex items-center gap-3 mb-5">
+                <div className="w-8 h-8 overflow-hidden shrink-0">
+                  <img src={ASSETS.logo} alt="DK Jhula" className="w-full h-full object-cover" />
                 </div>
-                <div className="font-display text-[9px] tracking-[3px] uppercase text-warm-white/60 mt-1">
-                  Handcrafted · Est. 2009 · Anand, Gujarat
-                </div>
-              </div>
+                <span className="font-display text-[14px] font-extrabold uppercase tracking-[0.15em] text-inverse-on-surface">
+                  DK Jhula
+                </span>
+              </Link>
+              <p className="font-body text-[16px] italic text-inverse-on-surface/60 leading-relaxed max-w-xs">
+                Handcrafted Indian Heritage.
+                <br />Anand, Gujarat · Est. 2009
+              </p>
             </div>
 
-            {/* Links */}
-            <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            {/* Navigation */}
+            <nav className="flex flex-col gap-4">
+              <div className="font-display text-[11px] uppercase tracking-[0.1em] font-semibold text-inverse-on-surface/40 mb-2">
+                Navigate
+              </div>
               {footerLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="font-display text-[11px] uppercase tracking-[2px] text-warm-white/70 hover:text-gold transition-colors duration-200"
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="font-display text-[12px] uppercase tracking-[0.08em] text-inverse-on-surface/65 hover:text-secondary-container transition-colors duration-200"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
+
+
           </div>
         </BlurFade>
 
-        <Separator className="bg-white/[0.07]" />
-
+        {/* Bottom bar */}
         <BlurFade delay={0.2} inView inViewMargin="-40px">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-5">
-            <div className="font-display text-[11px] uppercase tracking-[1px] text-warm-white/55">
-              © {new Date().getFullYear()} DK Jhula. All rights reserved.
-            </div>
-            <div className="font-body text-[13px] italic text-warm-white/55">
-              Made with love in Anand
+          <div className="border-t border-inverse-on-surface/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="font-display text-[11px] uppercase tracking-[0.08em] text-inverse-on-surface/40">
+              © {new Date().getFullYear()} DK Jhula. Crafted in India.
             </div>
           </div>
         </BlurFade>

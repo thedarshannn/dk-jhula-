@@ -1,25 +1,26 @@
+import { Routes, Route } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import Hero from "@/components/sections/Hero";
-import TrustBar from "@/components/sections/TrustBar";
-import Features from "@/components/sections/Features";
-import Shop from "@/components/sections/Shop";
-import About from "@/components/sections/About";
-import Reviews from "@/components/sections/Reviews";
-import OrderContact from "@/components/sections/OrderContact";
+import ScrollToTop from "@/components/layout/ScrollToTop";
+import HomePage from "@/pages/HomePage";
+import CollectionsPage from "@/pages/CollectionsPage";
+import HeritagePage from "@/pages/HeritagePage";
+import ReviewsPage from "@/pages/ReviewsPage";
+import ContactPage from "@/pages/ContactPage";
 
 export default function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-surface">
+      <ScrollToTop />
       <Navbar />
       <main>
-        <Hero />
-        <TrustBar />
-        <Features />
-        <Shop />
-        <About />
-        <Reviews />
-        <OrderContact />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/collections" element={<CollectionsPage />} />
+          <Route path="/heritage" element={<HeritagePage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
       </main>
       <Footer />
     </div>

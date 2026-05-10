@@ -15,39 +15,23 @@ export default function Shop() {
       : products.filter((p) => p.cat === activeFilter);
 
   return (
-    <section id="shop" className="section-padding bg-cream">
-      <div className="max-w-7xl mx-auto">
+    <section id="shop" className="section-padding bg-surface">
+      <div className="max-w-[1440px] mx-auto">
 
-        {/* Section header — split layout */}
-        <BlurFade delay={0.1} inView inViewMargin="-80px">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
-            <div>
-              <div className="section-label">Our Collection</div>
-              <h2 className="font-display text-4xl md:text-5xl font-extrabold text-brand-brown tracking-tight leading-tight">
-                Handcrafted<br className="hidden sm:block" /> with Love
-              </h2>
-            </div>
-            <p className="font-body text-[16px] text-brand-brown-mid/85 leading-relaxed max-w-xs md:text-right md:pb-1">
-              Premium resham doori. Washable, warranted, customizable.
-              <br />Capacity: 150–200&nbsp;kg.
-            </p>
-          </div>
-        </BlurFade>
-
-        {/* Filter pill group — shadcn Button */}
+        {/* Filter tabs — architectural, no rounded corners */}
         <BlurFade delay={0.2} inView inViewMargin="-80px">
-          <div className="flex flex-wrap gap-1 mb-10 p-1 bg-beige-light/70 border border-beige w-fit">
+          <div className="flex flex-wrap gap-0 mb-14">
             {categories.map((cat) => (
               <Button
                 key={cat.key}
-                variant={activeFilter === cat.key ? "default" : "ghost"}
+                variant="ghost"
                 size="sm"
                 onClick={() => setActiveFilter(cat.key)}
                 className={cn(
-                  "font-display text-[9.5px] tracking-[2px] uppercase font-semibold rounded-none",
+                  "font-display text-[11px] tracking-[0.08em] uppercase font-semibold px-6",
                   activeFilter === cat.key
-                    ? "bg-brand-brown text-warm-white hover:bg-brand-brown"
-                    : "text-brand-brown-mid hover:text-brand-brown hover:bg-beige"
+                    ? "bg-primary text-on-primary hover:bg-primary"
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
                 )}
               >
                 {cat.label}
@@ -56,10 +40,10 @@ export default function Shop() {
           </div>
         </BlurFade>
 
-        {/* Grid — 2 cols mobile, 3 lg, 4 xl */}
+        {/* Grid — 2 cols → 3 → 4 */}
         <motion.div
           layout
-          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4"
+          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5"
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((product) => (

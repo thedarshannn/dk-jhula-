@@ -1,193 +1,191 @@
-import { MessageCircle } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { ASSETS } from "@/lib/cloudinary";
-import { getWhatsAppUrl } from "@/lib/products";
-import { NumberTicker } from "@/components/ui/number-ticker";
-import { BorderBeam } from "@/components/ui/border-beam";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { motion, useMotionValue, useTransform, useInView } from "motion/react";
 
-const stats = [
-  { value: 15, suffix: "+", label: "Years of Craft" },
-  { value: 5, suffix: "+", label: "Countries Shipped" },
-  { value: 200, suffix: " kg", label: "Load Capacity" },
+/* ── NumberTicker ───────────────────────────────────── */
+function NumberTicker({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const duration = 1800;
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 4);
+      setCount(Math.floor(ease * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [isInView, target]);
+
+  return (
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  );
+}
+
+/* ── Timeline data ────────────────────────────────── */
+const timeline = [
+  {
+    year: "2009",
+    title: "The Foundation",
+    text: "The first workshop opens in Anand, Gujarat. Daxaben begins training a small cadre of women in the precise, mathematically demanding art of structural weaving.",
+  },
+  {
+    year: "2014",
+    title: "The Solid Wood Era",
+    text: "Transitioning from basic frames to ethically sourced, seasoned CP Teak. The introduction of traditional mortise and tenon joinery elevates the structural integrity of every piece.",
+  },
+  {
+    year: "2021",
+    title: "Modern Vernacular",
+    text: "DK Jhula embraces high-contrast minimalism. The designs are stripped of unnecessary ornamentation, allowing the raw materiality of wood, brass, and silk rope to dictate the aesthetic.",
+  },
 ];
 
-const highlights = [
-  "Resham Doori",
-  "Fully Washable",
-  "Rope Warranty",
-  "Custom Orders",
-  "Pan-India Delivery",
-  "All Ages & Sizes",
+/* ── Stats ─────────────────────────────────────────── */
+const stats = [
+  { label: "Years of Craft", value: 15, suffix: "+" },
+  { label: "Pieces Delivered", value: 500, suffix: "+" },
+  { label: "Happy Families", value: 350, suffix: "+" },
+  { label: "Artisans", value: 12, suffix: "" },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="bg-brand-brown relative overflow-hidden">
-      {/* Radial warm glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 80% at 85% 50%, rgba(201,162,39,0.07) 0%, transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 40% 50% at 10% 20%, rgba(253,252,249,0.03) 0%, transparent 60%)",
-        }}
-      />
+    <section id="about" className="bg-primary-container text-primary-fixed grain-overlay overflow-hidden">
 
-      <div className="max-w-7xl mx-auto section-padding">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-24 items-center">
+      {/* ── Hero quote block ──────────────────────────── */}
+      <div className="section-padding max-w-[1440px] mx-auto">
+        <BlurFade delay={0.1} inView inViewMargin="-80px">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-16 lg:gap-24 items-center mb-0">
+            {/* Left: Image */}
+            <div className="relative aspect-[4/5] overflow-hidden">
+              <img
+                src={ASSETS.heroImage}
+                alt="DK Jhula craftsmanship"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-container/40 to-transparent" />
+            </div>
 
-          {/* ── Image column ─────────────────────────────── */}
-          <BlurFade delay={0.1} direction="right" inView inViewMargin="-80px">
-            <div className="relative flex justify-center lg:justify-start">
-              <div className="relative inline-block">
-                <div className="absolute -top-4 -left-4 w-full h-full border border-gold/18 pointer-events-none" />
-                <div className="relative w-72 md:w-80 h-[420px] md:h-[500px]">
-                  <div className="w-full h-full overflow-hidden">
-                    <img
-                      src={ASSETS.logo}
-                      alt="DK Jhula craftsmanship"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <BorderBeam
-                    size={90}
-                    duration={9}
-                    colorFrom="#C9A227"
-                    colorTo="#E8CC7A"
-                    borderWidth={1.5}
-                  />
-                </div>
-                <div className="absolute -bottom-5 -right-5 bg-gold px-5 py-3.5 shadow-xl">
-                  <div className="font-display font-extrabold text-[13px] text-brand-brown tracking-[0.5px]">
-                    DK Jhula
-                  </div>
-                  <div className="font-body text-[10px] italic text-brand-brown/70 mt-0.5">
-                    Est. 2009
-                  </div>
-                </div>
+            {/* Right: Quote */}
+            <div>
+              <div className="font-display text-[12px] uppercase tracking-[0.1em] font-semibold text-secondary-fixed-dim mb-8">
+                Our Heritage
+              </div>
+              <p className="font-body text-[26px] md:text-[32px] italic text-primary-fixed leading-[1.5] mb-8">
+                "True luxury is measured in generations, not seasons."
+              </p>
+              <div className="font-display text-[13px] uppercase tracking-[0.06em] font-bold text-primary-fixed-dim">
+                Daxaben K. Prajapati
+              </div>
+              <div className="font-display text-[11px] uppercase tracking-[0.08em] text-on-primary-container mt-1">
+                Master Weaver, Anand
               </div>
             </div>
-          </BlurFade>
+          </div>
+        </BlurFade>
+      </div>
 
-          {/* ── Text column ───────────────────────────────── */}
-          <div>
-            <BlurFade delay={0.15} inView inViewMargin="-80px">
-              <div className="font-display text-[10px] uppercase tracking-[5px] text-gold mb-4">
-                Our Story
+      {/* ── Craft description ─────────────────────────── */}
+      <div className="px-8 md:px-12 lg:px-16 py-16 md:py-24 max-w-[1440px] mx-auto">
+        <BlurFade delay={0.1} inView inViewMargin="-80px">
+          <div className="max-w-3xl">
+            <h2 className="font-display text-[32px] md:text-[48px] font-extrabold text-primary-fixed tracking-[0.04em] leading-[1.2] uppercase mb-6">
+              The Resham Doori Craft
+            </h2>
+            <p className="font-body text-[18px] md:text-[22px] text-primary-fixed-dim leading-[1.6]">
+              An uncompromising dedication to a fading art. Each strand is
+              hand-tensioned, creating a structural web that offers both
+              resilience and an architectural aesthetic.
+            </p>
+          </div>
+        </BlurFade>
+      </div>
+
+      {/* ── Timeline ──────────────────────────────────── */}
+      <div className="px-8 md:px-12 lg:px-16 pb-24 md:pb-32 max-w-[1440px] mx-auto">
+        <BlurFade delay={0.1} inView inViewMargin="-80px">
+          <div className="font-display text-[12px] uppercase tracking-[0.1em] font-semibold text-secondary-fixed-dim mb-12">
+            Evolution of a Legacy
+          </div>
+        </BlurFade>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+          {timeline.map((item, i) => (
+            <BlurFade key={item.year} delay={0.15 + i * 0.12} inView inViewMargin="-60px">
+              <div
+                className="py-10 md:px-10 first:md:pl-0"
+                style={{
+                  boxShadow: i < timeline.length - 1
+                    ? "0 1px 0 0 rgba(209,196,178,0.12)"
+                    : "none",
+                }}
+              >
+                <div className="font-display text-[48px] md:text-[64px] font-extrabold text-secondary-fixed-dim/20 leading-[1] mb-4">
+                  {item.year}
+                </div>
+                <div className="font-display text-[16px] uppercase tracking-[0.06em] font-bold text-primary-fixed mb-3">
+                  {item.title}
+                </div>
+                <p className="font-body text-[16px] text-primary-fixed-dim leading-[1.6]">
+                  {item.text}
+                </p>
               </div>
             </BlurFade>
+          ))}
+        </div>
+      </div>
 
-            <BlurFade delay={0.25} inView inViewMargin="-80px">
-              <h2 className="font-display text-4xl md:text-5xl text-warm-white font-extrabold tracking-tight mb-3 leading-[1.08]">
-                Built on Craft
-              </h2>
-            </BlurFade>
-
-            <BlurFade delay={0.35} inView inViewMargin="-80px">
-              <div className="font-body text-[14px] italic text-gold-light/80 mb-10 tracking-wide">
-                Owner &amp; Artisan — Daxaben K. Prajapati
-              </div>
-            </BlurFade>
-
-            <BlurFade delay={0.4} inView inViewMargin="-80px">
-              <p className="font-body text-[17px] md:text-[18px] text-warm-white/90 leading-[1.85] mb-6">
-                Daxaben started making jhulas in a small room in Anand, Gujarat —
-                not as a business, but as a craft. Fifteen years on, every knot is
-                still tied by hand. No factories. No machines. Just her, the rope,
-                and the same quiet dedication she has always had.
+      {/* ── Editorial statement ───────────────────────── */}
+      <div className="px-8 md:px-12 lg:px-16 pb-24 max-w-[1440px] mx-auto border-t border-primary-fixed-dim/10 pt-24">
+        <BlurFade delay={0.1} inView inViewMargin="-80px">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <h2 className="font-display text-[28px] md:text-[40px] font-extrabold text-primary-fixed tracking-[0.04em] leading-[1.15] uppercase">
+              Silence in Design.<br />Strength in Structure.
+            </h2>
+            <div>
+              <p className="font-body text-[18px] text-primary-fixed-dim leading-[1.7] mb-6">
+                We do not design to fill a room; we design to anchor it.
+                A piece of furniture should possess enough physical and visual
+                gravity to command the negative space around it.
               </p>
-            </BlurFade>
-
-            <BlurFade delay={0.5} inView inViewMargin="-80px">
-              <p className="font-body text-[17px] md:text-[18px] text-warm-white/90 leading-[1.85] mb-10">
-                Each jhula is woven from premium resham doori — soft to the touch,
-                strong enough for your whole family. Fully washable, holds up to
-                200&nbsp;kg, and made to your exact colour, size, and design.
-                Backed by a rope warranty, because she stands behind her work.
+              <p className="font-body text-[18px] italic text-on-primary-container leading-[1.7]">
+                True tactile luxury cannot be faked. It is felt in the resistance
+                of the wood grain, the tension of the rope, and the cold,
+                unyielding weight of solid brass.
               </p>
-            </BlurFade>
+            </div>
+          </div>
+        </BlurFade>
+      </div>
 
-            {/* Pull quote — shadcn Card */}
-            <BlurFade delay={0.6} inView inViewMargin="-80px">
-              <Card className="mb-10 bg-white/[0.04] backdrop-blur-sm border-white/[0.08] rounded-sm">
-                <CardContent className="px-7 py-6">
-                  <div className="flex gap-5">
-                    <div className="w-[2px] bg-gradient-to-b from-gold via-gold-light to-gold/30 flex-shrink-0 rounded-full" />
-                    <div>
-                      <p className="font-body text-[21px] md:text-[22px] italic text-gold-light leading-snug">
-                        "I make each jhula as if it were
-                        <br />going into my own home."
-                      </p>
-                      <p className="font-display text-[10px] uppercase tracking-[3px] text-warm-white/50 mt-3">
-                        — Daxaben K. Prajapati, Founder
-                      </p>
-                    </div>
+      {/* ── Stats ─────────────────────────────────────── */}
+      <div className="bg-primary/20">
+        <div className="max-w-[1440px] mx-auto px-8 md:px-12 lg:px-16 py-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, i) => (
+              <BlurFade key={stat.label} delay={0.1 + i * 0.1} inView inViewMargin="-40px">
+                <div className="text-center">
+                  <div className="font-display text-[48px] md:text-[56px] font-extrabold text-secondary-fixed-dim leading-none mb-2">
+                    <NumberTicker target={stat.value} suffix={stat.suffix} />
                   </div>
-                </CardContent>
-              </Card>
-            </BlurFade>
-
-            {/* Stats row */}
-            <BlurFade delay={0.7} inView inViewMargin="-80px">
-              <div className="flex items-center gap-0 mb-10">
-                {stats.map((stat, i) => (
-                  <div key={stat.label} className="flex items-center">
-                    <div className={i > 0 ? "px-6" : "pr-6"}>
-                      <div className="flex items-baseline gap-0.5 leading-none">
-                        <NumberTicker
-                          value={stat.value}
-                          delay={0.5 + i * 0.18}
-                          className="font-display text-[28px] md:text-[30px] font-extrabold text-warm-white"
-                        />
-                        <span className="font-display text-[18px] md:text-[20px] font-extrabold text-gold">
-                          {stat.suffix}
-                        </span>
-                      </div>
-                      <div className="font-display text-[10px] uppercase tracking-[2.5px] text-warm-white/50 mt-2">
-                        {stat.label}
-                      </div>
-                    </div>
-                    {i < stats.length - 1 && (
-                      <div className="h-10 w-px bg-white/10" />
-                    )}
+                  <div className="font-display text-[11px] uppercase tracking-[0.1em] font-semibold text-primary-fixed-dim">
+                    {stat.label}
                   </div>
-                ))}
-              </div>
-            </BlurFade>
-
-            {/* Highlight tags — shadcn Badge */}
-            <BlurFade delay={0.8} inView inViewMargin="-80px">
-              <div className="flex flex-wrap gap-2.5 mb-10">
-                {highlights.map((h) => (
-                  <Badge
-                    key={h}
-                    variant="outline"
-                    className="px-4 py-2 bg-white/[0.04] border-white/[0.10] text-warm-white/70 font-display text-[10px] uppercase tracking-[2px] rounded-sm hover:border-gold/40 hover:text-gold/90 hover:bg-gold/[0.06] cursor-default transition-all duration-300"
-                  >
-                    {h}
-                  </Badge>
-                ))}
-              </div>
-            </BlurFade>
-
-            {/* CTA — shadcn Button */}
-            <BlurFade delay={0.9} inView inViewMargin="-80px">
-              <Button variant="gold" size="xl" asChild className="font-display text-[11px] tracking-[3px] uppercase font-bold hover:shadow-[0_0_24px_rgba(201,162,39,0.25)]">
-                <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-4 h-4" />
-                  Chat for Custom Order
-                </a>
-              </Button>
-            </BlurFade>
+                </div>
+              </BlurFade>
+            ))}
           </div>
         </div>
       </div>

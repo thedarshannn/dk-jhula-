@@ -1,6 +1,7 @@
 export const ASSETS = {
   logo: "https://res.cloudinary.com/dfwyavo3y/image/upload/v1777304510/logo_png_qj4u6p.jpg",
   heroVideo: "https://res.cloudinary.com/dfwyavo3y/video/upload/v1777304510/hero-vid_zacump.mp4",
+  heroImage: "https://res.cloudinary.com/dfwyavo3y/image/upload/v1777304511/p3_j4rn1m.jpg",
   products: {
     p1: "https://res.cloudinary.com/dfwyavo3y/image/upload/v1777304512/p1_jv69aw.jpg",
     p2: "https://res.cloudinary.com/dfwyavo3y/image/upload/v1777304513/p2_j5hsi9.jpg",

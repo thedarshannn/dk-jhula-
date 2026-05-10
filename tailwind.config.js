@@ -8,24 +8,68 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: "#F7F4EE",
-        "warm-white": "#FDFCF9",
+        /* ── Stitch Heritage Editorial — Surface Hierarchy ── */
+        surface: {
+          DEFAULT: "#fff8f1",
+          dim: "#e1d9cd",
+          bright: "#fff8f1",
+          "container-lowest": "#ffffff",
+          "container-low": "#fbf2e6",
+          container: "#f5ede0",
+          "container-high": "#efe7db",
+          "container-highest": "#eae1d5",
+          variant: "#eae1d5",
+          tint: "#695c4e",
+        },
+        "on-surface": {
+          DEFAULT: "#1e1b14",
+          variant: "#4c463e",
+        },
+        "inverse-surface": "#343028",
+        "inverse-on-surface": "#f8f0e3",
+        outline: {
+          DEFAULT: "#7e766d",
+          variant: "#cfc5bb",
+        },
+        primary: {
+          DEFAULT: "#000000",
+          container: "#231a0f",
+          fixed: "#f1e0cd",
+          "fixed-dim": "#d4c4b2",
+        },
+        "on-primary": {
+          DEFAULT: "#ffffff",
+          container: "#8f8272",
+        },
+        secondary: {
+          DEFAULT: "#755b00",
+          container: "#fed255",
+          fixed: "#ffe08e",
+          "fixed-dim": "#ecc246",
+        },
+        "on-secondary": {
+          DEFAULT: "#ffffff",
+          container: "#735a00",
+        },
+        /* ── Legacy aliases (safe removal later) ── */
+        cream: "#fff8f1",
+        "warm-white": "#ffffff",
         "brand-brown": {
-          DEFAULT: "#1C1409",
+          DEFAULT: "#1e1b14",
           dark: "#100C04",
-          mid: "#5A4832",
-          light: "#8C7A66",
+          mid: "#4c463e",
+          light: "#7e766d",
         },
         gold: {
-          DEFAULT: "#C9A227",
-          light: "#E8CC7A",
-          pale: "#F5EDD0",
-          dark: "#9A7A1A",
+          DEFAULT: "#755b00",
+          light: "#ecc246",
+          pale: "#ffe08e",
+          dark: "#584400",
         },
         beige: {
-          DEFAULT: "#E5DDD1",
-          mid: "#CCC0B0",
-          light: "#F2EDE4",
+          DEFAULT: "#cfc5bb",
+          mid: "#cfc5bb",
+          light: "#eae1d5",
         },
       },
       fontFamily: {
@@ -33,9 +77,9 @@ export default {
         body: ["Newsreader", "Georgia", "serif"],
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0px",
+        md: "0px",
+        sm: "0px",
       },
       keyframes: {
         "fade-in-up": {

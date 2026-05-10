@@ -1,248 +1,302 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Send, CheckCircle2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Star, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { fetchReviews, submitReview, type Review } from "@/lib/supabase";
 
-interface Feedback {
-  name: string;
-  email: string;
-  product: string;
-  rating: number;
-  text: string;
-  date: string;
+// ── helper: format stored ISO date into "Month YYYY" ──────────────────────────
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
 }
 
-const STARS = [1, 2, 3, 4, 5];
-
 export default function Reviews() {
-  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  // ── state ──────────────────────────────────────────────────────────────────
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [showForm, setShowForm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   const [rating, setRating] = useState(5);
-  const [hover, setHover] = useState(0);
-  const [success, setSuccess] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", product: "", text: "" });
+  const [hoverRating, setHoverRating] = useState(0);
+  const [form, setForm] = useState({ name: "", location: "", text: "" });
 
-  const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((f) => ({ ...f, [key]: e.target.value }));
+  // ── fetch on mount ─────────────────────────────────────────────────────────
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchReviews();
+        setReviews(data);
+      } catch {
+        setError("Could not load reviews. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
-  const submit = () => {
-    if (!form.name.trim()) return alert("Please enter your name.");
-    if (!form.email.trim() || !form.email.includes("@")) return alert("Please enter a valid email.");
-    if (!form.text.trim()) return alert("Please write your feedback.");
+  // ── pagination ─────────────────────────────────────────────────────────────
+  const reviewsPerPage = 2;
+  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  const visible = reviews.slice(
+    currentPage * reviewsPerPage,
+    currentPage * reviewsPerPage + reviewsPerPage
+  );
 
-    const masked = form.email.replace(
-      /(.{2})(.*)(@.*)/,
-      (_: string, a: string, b: string, c: string) => a + b.replace(/./g, "*") + c
-    );
-
-    setFeedbacks((prev) => [
-      {
-        name: form.name,
-        email: masked,
-        product: form.product,
+  // ── form submit ────────────────────────────────────────────────────────────
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.text.trim()) return;
+    setSubmitting(true);
+    try {
+      await submitReview({
+        name: form.name.trim(),
+        location: form.location.trim() || undefined,
         rating,
-        text: form.text,
-        date: new Date().toLocaleDateString("en-IN", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        }),
-      },
-      ...prev,
-    ]);
-
-    setForm({ name: "", email: "", product: "", text: "" });
-    setRating(5);
-    setSuccess(true);
-    setTimeout(() => setSuccess(false), 4000);
+        text: form.text.trim(),
+      });
+      setSubmitted(true);
+      setForm({ name: "", location: "", text: "" });
+      setRating(5);
+      setTimeout(() => {
+        setSubmitted(false);
+        setShowForm(false);
+      }, 3000);
+    } catch {
+      alert("Could not submit your review. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
+  // ── render ─────────────────────────────────────────────────────────────────
   return (
-    <section id="reviews" className="section-padding bg-warm-white">
-      <div className="max-w-7xl mx-auto">
+    <section id="reviews" className="section-padding bg-surface-container-low">
+      <div className="max-w-[1440px] mx-auto">
 
-        {/* Header */}
+        {/* Action bar */}
         <BlurFade delay={0.1} inView inViewMargin="-80px">
-          <div className="mb-14">
-            <div className="section-label">Testimonials</div>
-            <h2 className="font-display text-4xl md:text-5xl text-brand-brown font-extrabold tracking-tight">
-              Reviews &amp; Feedback
-            </h2>
+          <div className="flex justify-end mb-12">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setShowForm(!showForm)}
+              className="whitespace-nowrap"
+            >
+              {showForm ? "Close" : "Leave a Review"}
+            </Button>
           </div>
         </BlurFade>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16">
-
-          {/* ── Form ──────────────────────────────────────────── */}
-          <BlurFade delay={0.2} inView inViewMargin="-80px">
-            <div>
-              <h3 className="font-body text-2xl italic text-brand-brown mb-1.5">Leave a Review</h3>
-              <p className="font-body text-[14px] text-brand-brown-mid/65 mb-9">
-                Your name and email are required. Email will be partially masked for privacy.
-              </p>
-
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <Label className="font-display text-[9px] tracking-[2.5px] uppercase text-brand-brown-mid font-semibold">
-                    Your Name *
-                  </Label>
-                  <Input
-                    type="text"
-                    value={form.name}
-                    onChange={set("name")}
-                    placeholder="e.g. Priya Sharma"
-                    className="border-beige bg-transparent rounded-none border-t-0 border-x-0 px-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-brand-brown"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="font-display text-[9px] tracking-[2.5px] uppercase text-brand-brown-mid font-semibold">
-                    Email Address *
-                  </Label>
-                  <Input
-                    type="email"
-                    value={form.email}
-                    onChange={set("email")}
-                    placeholder="your@email.com"
-                    className="border-beige bg-transparent rounded-none border-t-0 border-x-0 px-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-brand-brown"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="font-display text-[9px] tracking-[2.5px] uppercase text-brand-brown-mid font-semibold">
-                    Product Purchased
-                  </Label>
-                  <Input
-                    type="text"
-                    value={form.product}
-                    onChange={set("product")}
-                    placeholder="e.g. Pink Canopy Jhula"
-                    className="border-beige bg-transparent rounded-none border-t-0 border-x-0 px-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-brand-brown"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="font-display text-[9px] tracking-[2.5px] uppercase text-brand-brown-mid font-semibold">
-                    Your Rating
-                  </Label>
-                  <div className="flex gap-2 pt-1">
-                    {STARS.map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        onClick={() => setRating(n)}
-                        onMouseEnter={() => setHover(n)}
-                        onMouseLeave={() => setHover(0)}
-                        className={cn(
-                          "text-[28px] leading-none cursor-pointer select-none transition-colors duration-100",
-                          n <= (hover || rating) ? "text-gold" : "text-beige-mid"
-                        )}
-                      >
-                        ★
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="font-display text-[9px] tracking-[2.5px] uppercase text-brand-brown-mid font-semibold">
-                    Your Feedback *
-                  </Label>
-                  <Textarea
-                    value={form.text}
-                    onChange={set("text")}
-                    placeholder="Tell us about quality, delivery, customization..."
-                    rows={4}
-                    className="border-beige bg-transparent rounded-none border-t-0 border-x-0 px-0 resize-none min-h-[100px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-brand-brown"
-                  />
-                </div>
-
-                <Button onClick={submit} className="w-full font-display text-[11px] tracking-[3px] uppercase font-bold">
-                  <Send className="w-3.5 h-3.5" />
-                  Submit Feedback
-                </Button>
-
-                <AnimatePresence>
-                  {success && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                    >
-                      <Card className="border-beige bg-beige-light">
-                        <CardContent className="flex items-center gap-3 p-4">
-                          <CheckCircle2 className="w-5 h-5 text-gold shrink-0" />
-                          <span className="font-body text-[15px] text-brand-brown">
-                            Thank you! Your feedback means the world to us.
-                          </span>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          </BlurFade>
-
-          {/* ── Reviews list ──────────────────────────────────── */}
-          <BlurFade delay={0.3} inView inViewMargin="-80px">
-            <div>
-              <h3 className="font-body text-2xl italic text-brand-brown mb-1.5">Customer Reviews</h3>
-              <p className="font-body text-[14px] text-brand-brown-mid/65 mb-9">
-                {feedbacks.length > 0
-                  ? `${feedbacks.length} review${feedbacks.length > 1 ? "s" : ""} from our customers`
-                  : "Be the first to leave a review!"}
-              </p>
-
-              <div className="space-y-6 max-h-[540px] overflow-y-auto pr-1">
-                {feedbacks.length === 0 ? (
-                  <div className="text-center py-16 text-brand-brown-mid/40 font-body italic text-[17px]">
-                    No reviews yet. Share yours above!
+        {/* Review form */}
+        <AnimatePresence>
+          {showForm && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden mb-16"
+            >
+              <div className="bg-surface-container p-8 md:p-12 max-w-2xl">
+                {submitted ? (
+                  <div className="py-10 text-center">
+                    <p className="font-display text-[22px] font-bold text-on-surface uppercase tracking-[0.04em] mb-2">
+                      Thank You!
+                    </p>
+                    <p className="font-body text-[16px] text-on-surface-variant italic">
+                      Your review is pending approval and will appear shortly.
+                    </p>
                   </div>
                 ) : (
-                  feedbacks.map((fb, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 14 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <Card className="border-beige/60 shadow-none">
-                        <CardContent className="p-5">
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <div className="font-display text-[12.5px] font-bold text-brand-brown">{fb.name}</div>
-                              {fb.product && (
-                                <div className="font-body text-[12px] italic text-brand-brown-mid/55 mt-0.5">
-                                  {fb.product}
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex shrink-0 text-[13px] leading-none">
-                              <span className="text-gold">{"★".repeat(fb.rating)}</span>
-                              <span className="text-beige-mid">{"★".repeat(5 - fb.rating)}</span>
-                            </div>
-                          </div>
-                          <p className="font-body text-[15px] text-brand-brown-mid/80 leading-relaxed italic mb-2.5">
-                            "{fb.text}"
-                          </p>
-                          <div className="font-display text-[10.5px] text-brand-brown-mid/35 tracking-wide">
-                            {fb.date} · {fb.email}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Stars */}
+                    <div>
+                      <label className="font-display text-[12px] uppercase tracking-[0.1em] font-semibold text-on-surface-variant block mb-4">
+                        Your Rating
+                      </label>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onMouseEnter={() => setHoverRating(s)}
+                            onMouseLeave={() => setHoverRating(0)}
+                            onClick={() => setRating(s)}
+                            className="cursor-pointer p-0.5"
+                          >
+                            <Star
+                              className={`w-5 h-5 transition-colors ${
+                                s <= (hoverRating || rating)
+                                  ? "fill-secondary text-secondary"
+                                  : "fill-transparent text-outline-variant"
+                              }`}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-display text-[12px] uppercase tracking-[0.1em] font-semibold text-on-surface-variant block mb-2">
+                        Name
+                      </label>
+                      <Input
+                        value={form.name}
+                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        placeholder="Your full name"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-display text-[12px] uppercase tracking-[0.1em] font-semibold text-on-surface-variant block mb-2">
+                        City / Location{" "}
+                        <span className="text-on-surface-variant/50">(optional)</span>
+                      </label>
+                      <Input
+                        value={form.location}
+                        onChange={(e) => setForm({ ...form, location: e.target.value })}
+                        placeholder="e.g. Mumbai"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-display text-[12px] uppercase tracking-[0.1em] font-semibold text-on-surface-variant block mb-2">
+                        Review
+                      </label>
+                      <Textarea
+                        value={form.text}
+                        onChange={(e) => setForm({ ...form, text: e.target.value })}
+                        placeholder="Share your experience with DK Jhula..."
+                        rows={4}
+                        required
+                      />
+                    </div>
+
+                    <Button type="submit" size="xl" disabled={submitting}>
+                      {submitting ? (
+                        <span className="flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Submitting…
+                        </span>
+                      ) : (
+                        "Submit Review"
+                      )}
+                    </Button>
+                  </form>
                 )}
               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Loading state */}
+        {loading && (
+          <div className="flex justify-center items-center py-24">
+            <Loader2 className="w-8 h-8 animate-spin text-on-surface-variant" />
+          </div>
+        )}
+
+        {/* Error state */}
+        {!loading && error && (
+          <p className="text-center font-body text-[16px] text-on-surface-variant italic py-16">
+            {error}
+          </p>
+        )}
+
+        {/* Empty state */}
+        {!loading && !error && reviews.length === 0 && (
+          <p className="text-center font-body text-[18px] text-on-surface-variant italic py-16">
+            No reviews yet — be the first to share your experience!
+          </p>
+        )}
+
+        {/* Review list */}
+        {!loading && !error && reviews.length > 0 && (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
+              <AnimatePresence mode="wait">
+                {visible.map((review, i) => (
+                  <motion.div
+                    key={`${review.id}-${currentPage}`}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ delay: i * 0.08, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div className="bg-surface p-8 md:p-10 h-full flex flex-col">
+                      {/* Stars */}
+                      <div className="flex gap-0.5 mb-5">
+                        {Array.from({ length: 5 }).map((_, s) => (
+                          <Star
+                            key={s}
+                            className={`w-4 h-4 ${
+                              s < review.rating
+                                ? "fill-secondary text-secondary"
+                                : "fill-transparent text-outline-variant"
+                            }`}
+                          />
+                        ))}
+                      </div>
+
+                      <p className="font-body text-[18px] text-on-surface italic leading-[1.7] mb-8 flex-1">
+                        "{review.text}"
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-display text-[13px] font-bold tracking-[0.04em] text-on-surface">
+                            {review.name}
+                          </div>
+                          {review.location && (
+                            <div className="font-display text-[11px] tracking-[0.06em] text-on-surface-variant mt-0.5">
+                              {review.location}
+                            </div>
+                          )}
+                        </div>
+                        <div className="font-display text-[11px] tracking-[0.06em] uppercase text-outline">
+                          {formatDate(review.created_at)}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
-          </BlurFade>
-        </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-6">
+                <button
+                  onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+                  disabled={currentPage === 0}
+                  className="p-2 text-on-surface-variant hover:text-on-surface disabled:opacity-25 transition-all cursor-pointer"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <span className="font-display text-[11px] tracking-[0.08em] uppercase text-on-surface-variant">
+                  {currentPage + 1} / {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))}
+                  disabled={currentPage === totalPages - 1}
+                  className="p-2 text-on-surface-variant hover:text-on-surface disabled:opacity-25 transition-all cursor-pointer"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
   );

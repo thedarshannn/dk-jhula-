@@ -1,38 +1,65 @@
-import { Truck, Globe, Ribbon, Shield, Palette, Droplets } from "lucide-react";
-import { Marquee } from "@/components/ui/marquee";
-import { Badge } from "@/components/ui/badge";
+import { Ribbon, Droplets, ShieldCheck, Users, Palette } from "lucide-react";
+import { BlurFade } from "@/components/ui/blur-fade";
 
-const items = [
-  { icon: Truck,    label: "Pan-India Delivery" },
-  { icon: Globe,    label: "5+ Countries Served" },
-  { icon: Ribbon,   label: "Premium Resham Doori" },
-  { icon: Shield,   label: "100-150 kg Capacity" },
-  { icon: Palette,  label: "Full Customization" },
-  { icon: Droplets, label: "Fully Washable" },
-  { icon: Shield,   label: "Rope Warranty" },
+const features = [
+  {
+    icon: Ribbon,
+    title: "Resham Doori",
+    desc: "Intricately woven premium silk ropes ensuring unmatched durability and a lustrous finish.",
+  },
+  {
+    icon: Droplets,
+    title: "Washable",
+    desc: "Designed for modern living, our materials are fully washable, maintaining their pristine luxury.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Warranty",
+    desc: "Backed by a comprehensive warranty on our structural ropes, securing your heirloom piece.",
+  },
+  {
+    icon: Users,
+    title: "All Ages",
+    desc: "Engineered for comfort and safety, perfectly suited for every member of the family.",
+  },
+  {
+    icon: Palette,
+    title: "Customize",
+    desc: "Bespoke dimensions, finishes, and colors tailored exactly to your interior vision.",
+  },
 ];
 
 export default function TrustBar() {
   return (
-    <div className="bg-warm-white border-y border-beige overflow-hidden">
-      <Marquee
-        pauseOnHover
-        repeat={3}
-        className="py-2 [--duration:25s] [--gap:0.5rem]"
-      >
-        {items.map((item) => (
-          <Badge
-            key={item.label}
-            variant="outline"
-            className="inline-flex items-center gap-2.5 px-5 py-2.5 border-beige bg-transparent text-brand-brown hover:bg-beige-light/50 rounded-none cursor-default transition-colors duration-200"
-          >
-            <item.icon className="w-3.5 h-3.5 text-gold shrink-0" strokeWidth={1.75} />
-            <span className="font-display text-[10px] tracking-[2.5px] uppercase font-semibold whitespace-nowrap">
-              {item.label}
-            </span>
-          </Badge>
-        ))}
-      </Marquee>
-    </div>
+    <section id="features" className="bg-surface-container-low">
+      <div className="max-w-[1440px] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+          {features.map((f, i) => (
+            <BlurFade key={f.title} delay={i * 0.08} inView inViewMargin="-40px">
+              <div
+                className="group px-8 py-12 lg:px-7 lg:py-16 h-full transition-colors duration-300 hover:bg-surface-container"
+                style={{
+                  /* Tonal dividers — using box-shadow instead of border per design system */
+                  boxShadow: i < features.length - 1
+                    ? "1px 0 0 0 rgba(207,197,187,0.3)"
+                    : "none",
+                }}
+              >
+                <f.icon
+                  className="w-5 h-5 text-outline mb-5 transition-colors duration-300 group-hover:text-secondary"
+                  strokeWidth={1.4}
+                />
+                <div className="font-display text-[12px] uppercase tracking-[0.1em] font-bold text-on-surface mb-3">
+                  {f.title}
+                </div>
+                <div className="font-body text-[16px] text-on-surface-variant leading-[1.6]">
+                  {f.desc}
+                </div>
+              </div>
+            </BlurFade>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

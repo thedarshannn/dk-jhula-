@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, MessageCircle } from "lucide-react";
 import { ASSETS } from "@/lib/cloudinary";
 import { getWhatsAppUrl } from "@/lib/products";
@@ -13,14 +14,15 @@ import {
 } from "@/components/ui/sheet";
 
 const navLinks = [
-  { label: "Shop", href: "#shop" },
-  { label: "About", href: "#about" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "Order", href: "#order" },
+  { label: "Collections", to: "/collections" },
+  { label: "Heritage",    to: "/heritage" },
+  { label: "Reviews",     to: "/reviews" },
+  { label: "Contact",     to: "/contact" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -35,98 +37,93 @@ export default function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           scrolled
-            ? "bg-warm-white/96 backdrop-blur-md border-b border-beige shadow-sm"
+            ? "bg-surface/96 backdrop-blur-md"
             : "bg-transparent"
         )}
       >
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between h-[68px]">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3">
-            <div
-              className={cn(
-                "w-8 h-8 rounded-full overflow-hidden border transition-all duration-300 shrink-0",
-                scrolled ? "border-beige" : "border-white/25"
-              )}
-            >
+        <div className="max-w-[1440px] mx-auto px-8 md:px-12 lg:px-16 flex items-center justify-between h-[72px]">
+          {/* Brand */}
+          <Link to="/" className="flex items-center gap-3.5">
+            <div className="w-8 h-8 overflow-hidden shrink-0">
               <img src={ASSETS.logo} alt="DK Jhula" className="w-full h-full object-cover" />
             </div>
-            <div>
-              <div
-                className={cn(
-                  "font-body text-[20px] italic leading-none transition-colors duration-300",
-                  scrolled ? "text-brand-brown" : "text-white"
-                )}
-              >
-                DK Jhula
-              </div>
-              <div
-                className={cn(
-                  "font-display text-[8px] tracking-[3px] uppercase transition-colors duration-300 mt-0.5",
-                  scrolled ? "text-brand-brown-mid/70" : "text-white/65"
-                )}
-              >
-                Handcrafted with Love
-              </div>
-            </div>
-          </a>
+            <span
+              className={cn(
+                "font-display text-[14px] font-extrabold uppercase tracking-[0.15em] transition-colors duration-300",
+                scrolled ? "text-on-surface" : "text-white"
+              )}
+            >
+              DK Jhula
+            </span>
+          </Link>
 
           {/* Desktop nav */}
-          <ul className="hidden md:flex items-center gap-9">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className={cn(
-                    "relative font-display text-[11px] tracking-[2px] uppercase font-semibold transition-colors duration-200",
-                    "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-gold",
-                    "after:transition-[width] after:duration-300 hover:after:w-full",
-                    scrolled
-                      ? "text-brand-brown-mid hover:text-brand-brown"
-                      : "text-white/85 hover:text-white"
-                  )}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+          <ul className="hidden md:flex items-center gap-10">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.to;
+              return (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className={cn(
+                      "font-display text-[12px] tracking-[0.1em] uppercase font-semibold transition-colors duration-200",
+                      scrolled
+                        ? isActive
+                          ? "text-on-surface"
+                          : "text-on-surface-variant hover:text-on-surface"
+                        : isActive
+                          ? "text-white"
+                          : "text-white/80 hover:text-white"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <Button variant="whatsapp" size="sm" asChild className="hidden sm:inline-flex font-display text-[12px] tracking-wide">
+            <Button variant="whatsapp" size="sm" asChild className="hidden sm:inline-flex">
               <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-3.5 h-3.5" />
                 WhatsApp
               </a>
             </Button>
 
-            {/* Mobile menu — shadcn Sheet */}
+            {/* Mobile Sheet */}
             <Sheet>
               <SheetTrigger asChild>
                 <button
                   className={cn(
                     "md:hidden p-2 transition-colors cursor-pointer",
-                    scrolled ? "text-brand-brown" : "text-white"
+                    scrolled ? "text-on-surface" : "text-white"
                   )}
                   aria-label="Toggle menu"
                 >
                   <Menu className="w-5 h-5" />
                 </button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-64 pt-12">
+              <SheetContent side="right" className="w-72 pt-16">
                 <SheetTitle className="sr-only">Navigation</SheetTitle>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-0">
                   {navLinks.map((link) => (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      className="font-display text-[11px] tracking-[2px] uppercase font-semibold text-brand-brown py-4 px-3 hover:text-brand-brown hover:bg-beige-light transition-all"
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      className={cn(
+                        "font-display text-[12px] tracking-[0.1em] uppercase font-semibold py-5 border-b border-outline-variant/20 transition-all",
+                        location.pathname === link.to
+                          ? "text-secondary"
+                          : "text-on-surface hover:text-secondary"
+                      )}
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   ))}
-                  <div className="mt-5 pt-5 border-t border-beige">
-                    <Button variant="whatsapp" className="w-full justify-center font-display text-[12px] tracking-wide" asChild>
+                  <div className="mt-8">
+                    <Button variant="whatsapp" className="w-full justify-center" asChild>
                       <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
                         <MessageCircle className="w-4 h-4" />
                         WhatsApp Order
